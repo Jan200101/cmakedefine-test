@@ -5,6 +5,12 @@
 // defined as 1
 #cmakedefine01 bar
 
+// defined as 0
+#cmakedefine01 barfalse
+
+// defined as 0
+#cmakedefine01 barzero
+
 // defined with no value
 #cmakedefine foobar
 
