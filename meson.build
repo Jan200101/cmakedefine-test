@@ -6,6 +6,7 @@ conf_data.set('HAVE_FOO', 'foo_content')
 conf_data.set('bar', 'test')
 conf_data.set('barfalse', false)
 conf_data.set('barzero', 0)
+conf_data.set('barint', 22)
 conf_data.set('foobar', 'value')
 conf_data.set10('barfoo', false)
 

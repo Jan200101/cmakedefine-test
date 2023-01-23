@@ -7,6 +7,7 @@ set(HAVE_FOO foo_content)
 set(bar "test")
 set(barfalse OFF)
 set(barzero 0)
+set(barint 22)
 set(foobar "value")
 set(barfoo OFF)
 

@@ -17,11 +17,20 @@
 // defined as 0
 #cmakedefine01 barfoo
 
-// undefined
+// no body
+#cmakedefine barint
+
+// undefined, does not exist
+#cmakedefine BARINT
+
+// undefined, does not exist
 #cmakedefine unfoo "@HAVE_FOO@"
 
-// undefined
+// undefined, does not exist
 #cmakedefine unbar
 
-// defined as 0
+// defined as 0, does not exist
 #cmakedefine01 unbarfoo
+
+// defined as (int)22
+#cmakedefine foo (int)@barint@
