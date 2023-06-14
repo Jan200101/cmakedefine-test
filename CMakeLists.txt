@@ -10,6 +10,7 @@ set(barzero 0)
 set(barint 22)
 set(foobar "value")
 set(barfoo OFF)
+set(nofoo)
 
 configure_file(
     test.h.cmake

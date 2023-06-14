@@ -43,3 +43,6 @@
 
 // defined as (int)22
 #cmakedefine foo (int)@barint@
+
+// defined as 0, no value
+#cmakedefine01 nofoo
