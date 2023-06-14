@@ -8,11 +8,20 @@
 // defined as 0
 #cmakedefine01 barfalse
 
+// undefined
+#cmakedefine barfalse @barfalse@
+
+// undefined
+#cmakedefine barzero @barzero@
+
 // defined as 0
 #cmakedefine01 barzero
 
 // defined with no value
 #cmakedefine foobar
+
+// defined with no value
+#cmakedefine foo
 
 // defined as 0
 #cmakedefine01 barfoo
