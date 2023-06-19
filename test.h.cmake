@@ -2,6 +2,9 @@
 // defined as "foo_content"
 #cmakedefine foo "@HAVE_FOO@" 
 
+// defined as "foo_content"
+#cmakedefine footoo "${HAVE_FOO}" 
+
 // defined as 1
 #cmakedefine01 bar
 

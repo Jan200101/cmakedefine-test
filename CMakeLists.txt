@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.12)
 project(test LANGUAGES C)
 
 set(foo ON)
+set(footoo ON)
 set(HAVE_FOO foo_content)
 set(bar "test")
 set(barfalse OFF)

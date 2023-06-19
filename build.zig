@@ -7,6 +7,7 @@ pub fn build(b: *std.build.Builder) void {
         },
         .{
             .foo = true,
+            .footoo = true,
             .HAVE_FOO = "foo_content",
             .bar = "test",
             .barfalse = false,

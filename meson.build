@@ -2,6 +2,7 @@ project('test', ['c'])
 
 conf_data = configuration_data()
 conf_data.set10('foo', true)
+conf_data.set10('footoo', true)
 conf_data.set('HAVE_FOO', 'foo_content')
 conf_data.set('bar', 'test')
 conf_data.set('barfalse', false)
