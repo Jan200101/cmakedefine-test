@@ -1,51 +1,93 @@
+// cmakedefine
+// undefined
+#cmakedefine noval unreachable
 
-// defined as "foo_content"
-#cmakedefine foo "@HAVE_FOO@" 
-
-// defined as "foo_content"
-#cmakedefine footoo "${HAVE_FOO}" 
-
-// defined as 1
-#cmakedefine01 bar
-
-// defined as 0
-#cmakedefine01 barfalse
+// 1
+#cmakedefine trueval 1
 
 // undefined
-#cmakedefine barfalse @barfalse@
+#cmakedefine falseval unreachable
 
 // undefined
-#cmakedefine barzero @barzero@
+#cmakedefine zeroval unreachable
 
-// defined as 0
-#cmakedefine01 barzero
+// 1
+#cmakedefine oneval 1
 
-// defined with no value
-#cmakedefine foobar
+// 1
+#cmakedefine tenval 1
 
-// defined with no value
-#cmakedefine foo
+// 1
+#cmakedefine stringval 1
 
-// defined as 0
-#cmakedefine01 barfoo
 
-// no body
-#cmakedefine barint
+// cmakedefine01
+// 0
+#cmakedefine01 boolnoval
 
-// undefined, does not exist
-#cmakedefine BARINT
+// 1
+#cmakedefine01 booltrueval
 
-// undefined, does not exist
-#cmakedefine unfoo "@HAVE_FOO@"
+// 0
+#cmakedefine01 boolfalseval
 
-// undefined, does not exist
-#cmakedefine unbar
+// 0
+#cmakedefine01 boolzeroval
 
-// defined as 0, does not exist
-#cmakedefine01 unbarfoo
+// 1
+#cmakedefine01 booloneval
 
-// defined as (int)22
-#cmakedefine foo (int)@barint@
+// 1
+#cmakedefine01 booltenval
 
-// defined as 0, no value
-#cmakedefine01 nofoo
+// 1
+#cmakedefine01 boolstringval
+
+
+// @ substition
+
+// no substition
+// @noval@
+
+// 1
+// @trueval@
+
+// 0
+// @falseval@
+
+// 0
+// @zeroval@
+
+// 1
+// @oneval@
+
+// 10
+// @tenval@
+
+// test
+// @stringval@
+
+
+// ${} substition
+
+// removal
+// ${noval}
+
+// 1
+// ${trueval}
+
+// 0
+// ${falseval}
+
+// 0
+// ${zeroval}
+
+// 1
+// ${oneval}
+
+// 10
+// ${tenval}
+
+// test
+// ${stringval}
+

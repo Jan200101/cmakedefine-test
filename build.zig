@@ -1,25 +1,29 @@
 const std = @import("std");
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     const config_header = b.addConfigHeader(
         .{
             .style = .{ .cmake = .{ .path = "test.h.cmake" } },
         },
         .{
-            .foo = true,
-            .footoo = true,
-            .HAVE_FOO = "foo_content",
-            .bar = "test",
-            .barfalse = false,
-            .barzero = 0,
-            .barint = 22,
-            .foobar = "value",
-            .barfoo = false,
-            .unbar = null,
-            .nofoo = void{},
+            .noval = null,
+            .trueval = true,
+            .falseval = false,
+            .zeroval = 0,
+            .oneval = 1,
+            .tenval = 10,
+            .stringval = "test",
+
+            .boolnoval = void{},
+            .booltrueval = true,
+            .boolfalseval = false,
+            .boolzeroval = 0,
+            .booloneval = 1,
+            .booltenval = 10,
+            .boolstringval = "test",
         },
     );
 
-    const run_step = b.step("configure", "configure the relevant headers");
-    run_step.dependOn(&config_header.step);
+    const test_step = b.step("configure", "configure the header");
+    test_step.dependOn(&config_header.step);
 }

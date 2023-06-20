@@ -11,4 +11,4 @@ cmake -S "." -B "${CMAKE_BUILD_DIR}"
 ninja -C "${MESON_BUILD_DIR}"
 cmake --build "${CMAKE_BUILD_DIR}"
 
-diff -w -u {${CMAKE_BUILD_DIR},${MESON_BUILD_DIR}}/test.h
+diff -w -y {${CMAKE_BUILD_DIR},${MESON_BUILD_DIR}}/test.h
