@@ -1,4 +1,5 @@
 const std = @import("std");
+const ConfigHeader = std.Build.Step.ConfigHeader;
 
 pub fn build(b: *std.Build) void {
     const config_header = b.addConfigHeader(
@@ -24,6 +25,33 @@ pub fn build(b: *std.Build) void {
         },
     );
 
-    const test_step = b.step("configure", "configure the header");
+    const test_step = b.step("test", "configure and compare the header");
+    test_step.makeFn = compare_headers;
     test_step.dependOn(&config_header.step);
+}
+
+fn compare_headers(step: *std.Build.Step, prog_node: *std.Progress.Node) !void {
+    _ = prog_node;
+    const allocator = step.owner.allocator;
+
+    const config_header_step = step.dependencies.getLast();
+    const config_header = @fieldParentPtr(ConfigHeader, "step", config_header_step);
+
+    const cmake_header_path = "cmake_build/test.h";
+
+    const zig_header_path = config_header.output_file.path orelse @panic("Could not locate header file");
+
+    const cwd = std.fs.cwd();
+
+    const cmake_header = try cwd.readFileAlloc(allocator, cmake_header_path, config_header.max_bytes);
+    defer allocator.free(cmake_header);
+
+    const zig_header = try cwd.readFileAlloc(allocator, zig_header_path, config_header.max_bytes);
+    defer allocator.free(zig_header);
+
+    const header_text_index = std.mem.indexOf(u8, zig_header, "\n") orelse @panic("Could not find comment in header filer");
+
+    if (!std.mem.eql(u8, zig_header[header_text_index+1..], cmake_header)) {
+        @panic("processed cmakedefine header does not match expected output");
+    }
 }
