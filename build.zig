@@ -4,7 +4,8 @@ const ConfigHeader = std.Build.Step.ConfigHeader;
 pub fn build(b: *std.Build) void {
     const config_header = b.addConfigHeader(
         .{
-            .style = .{ .cmake = .{ .path = "test.h.cmake" } },
+            .style = .{ .cmake = b.path("test.h.cmake") },
+            .include_path = "cmake_build/test.h",
         },
         .{
             .noval = null,
@@ -30,28 +31,31 @@ pub fn build(b: *std.Build) void {
     test_step.dependOn(&config_header.step);
 }
 
-fn compare_headers(step: *std.Build.Step, prog_node: *std.Progress.Node) !void {
-    _ = prog_node;
+fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !void {
+    _ = options;
     const allocator = step.owner.allocator;
+    const expected_fmt = "expected_{s}";
 
-    const config_header_step = step.dependencies.getLast();
-    const config_header = @fieldParentPtr(ConfigHeader, "step", config_header_step);
+    for (step.dependencies.items) |config_header_step| {
+        const config_header: *ConfigHeader = @fieldParentPtr("step", config_header_step);
 
-    const cmake_header_path = "cmake_build/test.h";
+        const zig_header_path = config_header.output_file.path orelse @panic("Could not locate header file");
 
-    const zig_header_path = config_header.output_file.path orelse @panic("Could not locate header file");
+        const cwd = std.fs.cwd();
 
-    const cwd = std.fs.cwd();
+        const cmake_header_path = try std.fmt.allocPrint(allocator, expected_fmt, .{std.fs.path.basename(zig_header_path)});
+        defer allocator.free(cmake_header_path);
 
-    const cmake_header = try cwd.readFileAlloc(allocator, cmake_header_path, config_header.max_bytes);
-    defer allocator.free(cmake_header);
+        const cmake_header = try cwd.readFileAlloc(allocator, cmake_header_path, config_header.max_bytes);
+        defer allocator.free(cmake_header);
 
-    const zig_header = try cwd.readFileAlloc(allocator, zig_header_path, config_header.max_bytes);
-    defer allocator.free(zig_header);
+        const zig_header = try cwd.readFileAlloc(allocator, zig_header_path, config_header.max_bytes);
+        defer allocator.free(zig_header);
 
-    const header_text_index = std.mem.indexOf(u8, zig_header, "\n") orelse @panic("Could not find comment in header filer");
+        const header_text_index = std.mem.indexOf(u8, zig_header, "\n") orelse @panic("Could not find comment in header filer");
 
-    if (!std.mem.eql(u8, zig_header[header_text_index+1..], cmake_header)) {
-        @panic("processed cmakedefine header does not match expected output");
+        if (!std.mem.eql(u8, zig_header[header_text_index + 1 ..], cmake_header)) {
+            @panic("processed cmakedefine header does not match expected output");
+        }
     }
 }
