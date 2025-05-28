@@ -68,7 +68,7 @@
 // @stringval@
 
 
-// ${} substition
+// curly brackets substition
 
 // removal
 // ${noval}
