@@ -45,7 +45,6 @@ pub fn build(b: *std.Build) void {
 fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !void {
     _ = options;
     const allocator = step.owner.allocator;
-    const expected_fmt = "expected_{s}";
 
     for (step.dependencies.items) |config_header_step| {
         const config_header: *ConfigHeader = @fieldParentPtr("step", config_header_step);
@@ -54,10 +53,9 @@ fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !
 
         const cwd = std.fs.cwd();
 
-        const cmake_header_path = try std.fmt.allocPrint(allocator, expected_fmt, .{std.fs.path.basename(zig_header_path)});
-        defer allocator.free(cmake_header_path);
+        std.debug.print("zig_header_path {s}\ncmake_header_path {s}\n", .{ zig_header_path, config_header.include_path });
 
-        const cmake_header = try cwd.readFileAlloc(allocator, cmake_header_path, config_header.max_bytes);
+        const cmake_header = try cwd.readFileAlloc(allocator, config_header.include_path, config_header.max_bytes);
         defer allocator.free(cmake_header);
 
         const zig_header = try cwd.readFileAlloc(allocator, zig_header_path, config_header.max_bytes);
