@@ -25,6 +25,10 @@ conf_data.set('STRING_AT', '@STRING@')
 conf_data.set('STRING_CURLY', '{STRING}')
 conf_data.set('STRING_VAR', '${STRING}')
 
+conf_data.set('UNDERSCORE', '_')
+conf_data.set('NEST_UNDERSCORE_PROXY', 'UNDERSCORE')
+conf_data.set('NEST_PROXY', 'NEST_UNDERSCORE_PROXY')
+
 configure_file(
     input : 'test.h.cmake',
     output : 'test.h',

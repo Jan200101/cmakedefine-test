@@ -28,6 +28,11 @@ set(STRING_AT "@STRING@")
 set(STRING_CURLY "{STRING}")
 set(STRING_VAR "${STRING}")
 
+# stack test
+set(UNDERSCORE "_")
+set(NEST_UNDERSCORE_PROXY "UNDERSCORE")
+set(NEST_PROXY "NEST_UNDERSCORE_PROXY")
+
 configure_file(
     test.h.cmake
     test.h

@@ -124,3 +124,15 @@
 #define \@STRING_VAR\@
 #define \${STRING_VAR}
 #define $\{STRING_VAR}
+
+
+// sigil test (no changes)
+#define AT @
+#define ATAT @@
+#define ATATAT @@@
+#define ATATATAT @@@@
+
+
+// stack test (NEST_UNDERSCORE_PROXY)
+#define NEST_UNDERSCORE_PROXY ${NEST${UNDERSCORE}PROXY}
+#define NEST_UNDERSCORE_PROXY ${NEST${${NEST_UNDERSCORE${UNDERSCORE}PROXY}}PROXY}

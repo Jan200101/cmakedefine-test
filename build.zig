@@ -30,6 +30,10 @@ pub fn build(b: *std.Build) void {
             .STRING_AT = "@STRING@",
             .STRING_CURLY = "{STRING}",
             .STRING_VAR = "${STRING}",
+
+            .UNDERSCORE = "_",
+            .NEST_UNDERSCORE_PROXY = "UNDERSCORE",
+            .NEST_PROXY = "NEST_UNDERSCORE_PROXY",
         },
     );
 
