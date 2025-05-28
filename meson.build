@@ -21,6 +21,6 @@ conf_data.set('boolstringval', 'test')
 configure_file(
     input : 'test.h.cmake',
     output : 'test.h',
-    format : 'cmake@',
+    format : 'cmake',
     configuration : conf_data
 )
