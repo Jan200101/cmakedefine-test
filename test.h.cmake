@@ -1,4 +1,5 @@
 // cmakedefine
+
 // undefined
 #cmakedefine noval unreachable
 
@@ -22,6 +23,7 @@
 
 
 // cmakedefine01
+
 // 0
 #cmakedefine01 boolnoval
 
@@ -46,7 +48,10 @@
 
 // @ substition
 
-// no substition
+// undefined variable, removed
+// @undefval@
+
+// no value, removed
 // @noval@
 
 // 1
