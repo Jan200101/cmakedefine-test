@@ -23,6 +23,13 @@ pub fn build(b: *std.Build) void {
             .booloneval = 1,
             .booltenval = 10,
             .boolstringval = "test",
+
+            .DOLLAR = "$",
+            .TEXT = "TRAP",
+            .STRING = "TEXT",
+            .STRING_AT = "@STRING@",
+            .STRING_CURLY = "{STRING}",
+            .STRING_VAR = "${STRING}",
         },
     );
 

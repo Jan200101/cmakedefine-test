@@ -18,6 +18,13 @@ conf_data.set('booloneval', 1)
 conf_data.set('booltenval', 10)
 conf_data.set('boolstringval', 'test')
 
+conf_data.set('DOLLAR', '$')
+conf_data.set('TEXT', 'TRAP')
+conf_data.set('STRING', 'TEXT')
+conf_data.set('STRING_AT', '@STRING@')
+conf_data.set('STRING_CURLY', '{STRING}')
+conf_data.set('STRING_VAR', '${STRING}')
+
 configure_file(
     input : 'test.h.cmake',
     output : 'test.h',

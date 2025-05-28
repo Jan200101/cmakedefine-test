@@ -20,6 +20,14 @@ set(booloneval 1)
 set(booltenval 10)
 set(boolstringval "test")
 
+# wrapping tests
+set(DOLLAR "$")
+set(TEXT "TRAP")
+set(STRING "TEXT")
+set(STRING_AT "@STRING@")
+set(STRING_CURLY "{STRING}")
+set(STRING_VAR "${STRING}")
+
 configure_file(
     test.h.cmake
     test.h
