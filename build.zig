@@ -103,6 +103,7 @@ fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !
                 "diff",
                 "-w",
                 "-y",
+                "-I generated",
                 config_header.include_path,
                 zig_header_path,
             },
@@ -112,9 +113,9 @@ fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !
         std.debug.print("{s}\n", .{output});
 
         if (code == 0) {
-            std.debug.print("Output matches", .{});
+            std.debug.print("Output matches\n", .{});
         } else {
-            std.debug.print("Output does not match", .{});
+            std.debug.print("Output does not match\n", .{});
         }
     }
 }
