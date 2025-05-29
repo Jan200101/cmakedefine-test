@@ -26,7 +26,7 @@ set(TEXT "TRAP")
 set(STRING "TEXT")
 set(STRING_AT "@STRING@")
 set(STRING_CURLY "{STRING}")
-set(STRING_VAR "${STRING}")
+set(STRING_VAR "\${STRING}")
 
 # stack test
 set(UNDERSCORE "_")
