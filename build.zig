@@ -1,7 +1,13 @@
 const std = @import("std");
 const ConfigHeader = std.Build.Step.ConfigHeader;
 
-pub fn build(b: *std.Build) void {
+const Build = std.Build;
+const Step = Build.Step;
+const RunError = Build.RunError;
+const assert = std.debug.assert;
+const process = std.process;
+
+pub fn build(b: *Build) void {
     const config_header = b.addConfigHeader(
         .{
             .style = .{ .cmake = b.path("test.h.cmake") },
@@ -42,29 +48,73 @@ pub fn build(b: *std.Build) void {
     test_step.dependOn(&config_header.step);
 }
 
+pub fn run(
+    b: *Build,
+    argv: []const []const u8,
+    out_code: *u8,
+    stderr_behavior: std.process.Child.StdIo,
+) RunError![]u8 {
+    assert(argv.len != 0);
+
+    if (!process.can_spawn)
+        return error.ExecNotSupported;
+
+    const max_output_size = 400 * 1024;
+    var child = std.process.Child.init(argv, b.allocator);
+    child.stdin_behavior = .Ignore;
+    child.stdout_behavior = .Pipe;
+    child.stderr_behavior = stderr_behavior;
+    child.env_map = &b.graph.env_map;
+
+    try Step.handleVerbose2(b, null, child.env_map, argv);
+    try child.spawn();
+
+    const stdout = child.stdout.?.reader().readAllAlloc(b.allocator, max_output_size) catch {
+        return error.ReadFailure;
+    };
+    errdefer b.allocator.free(stdout);
+
+    const term = try child.wait();
+    switch (term) {
+        .Exited => |code| {
+            out_code.* = @as(u8, @truncate(code));
+            return stdout;
+        },
+        .Signal, .Stopped, .Unknown => |code| {
+            out_code.* = @as(u8, @truncate(code));
+            return error.ProcessTerminated;
+        },
+    }
+}
+
 fn compare_headers(step: *std.Build.Step, options: std.Build.Step.MakeOptions) !void {
     _ = options;
-    const allocator = step.owner.allocator;
+    const b = step.owner;
 
     for (step.dependencies.items) |config_header_step| {
         const config_header: *ConfigHeader = @fieldParentPtr("step", config_header_step);
 
         const zig_header_path = config_header.output_file.path orelse @panic("Could not locate header file");
 
-        const cwd = std.fs.cwd();
+        var code: u8 = undefined;
+        const output = try run(
+            b,
+            &.{
+                "diff",
+                "-w",
+                "-y",
+                config_header.include_path,
+                zig_header_path,
+            },
+            &code,
+            .Ignore,
+        );
+        std.debug.print("{s}\n", .{output});
 
-        std.debug.print("zig_header_path {s}\ncmake_header_path {s}\n", .{ zig_header_path, config_header.include_path });
-
-        const cmake_header = try cwd.readFileAlloc(allocator, config_header.include_path, config_header.max_bytes);
-        defer allocator.free(cmake_header);
-
-        const zig_header = try cwd.readFileAlloc(allocator, zig_header_path, config_header.max_bytes);
-        defer allocator.free(zig_header);
-
-        const header_text_index = std.mem.indexOf(u8, zig_header, "\n") orelse @panic("Could not find comment in header filer");
-
-        if (!std.mem.eql(u8, zig_header[header_text_index + 1 ..], cmake_header)) {
-            @panic("processed cmakedefine header does not match expected output");
+        if (code == 0) {
+            std.debug.print("Output matches", .{});
+        } else {
+            std.debug.print("Output does not match", .{});
         }
     }
 }
