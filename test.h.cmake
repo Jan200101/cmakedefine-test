@@ -21,6 +21,9 @@
 // 1
 #cmakedefine stringval 1
 
+// testing spacing
+// 1
+#    cmakedefine stringval 1
 
 // cmakedefine01
 
@@ -44,7 +47,6 @@
 
 // 1
 #cmakedefine01 boolstringval
-
 
 // @ substition
 
@@ -75,7 +77,13 @@
 
 // curly brackets substition
 
-// removal
+// empty curly brackets, removed
+// ${}
+
+// undefined variable, removed
+// ${undefval}
+
+// no value, removed
 // ${noval}
 
 // 1

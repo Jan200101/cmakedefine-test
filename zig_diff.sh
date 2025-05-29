@@ -8,5 +8,6 @@ rm -rf $CMAKE_BUILD_DIR $ZIG_CACHE_DIR
 cmake -S "." -B "${CMAKE_BUILD_DIR}"
 cmake --build "${CMAKE_BUILD_DIR}"
 
-# Comparisons are handled in build.zig
+# The header will be placed in the zig cache and we cannot anticipate
+# where exactly that will be so comparisons are handled in build.zig
 zig build test --verbose
