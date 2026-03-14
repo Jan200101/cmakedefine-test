@@ -21,9 +21,10 @@
 // 1
 #cmakedefine stringval 1
 
-// testing spacing
-// 1
-#    cmakedefine stringval 1
+// whitespace test
+    #cmakedefine stringval 1
+	#cmakedefine stringval 1
+
 
 // cmakedefine01
 
@@ -78,7 +79,8 @@
 // curly brackets substition
 
 // empty curly brackets, removed
-// ${}
+// this does not work with zig 0.15.2
+// $ {}
 
 // undefined variable, removed
 // ${undefval}
